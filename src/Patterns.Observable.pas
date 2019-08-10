@@ -13,9 +13,9 @@ type
   TObservable = class
   strict private
     FObservers: TArray<TObserver>;
-    procedure AddObserverToArray(o: TObserver);
-    function FindObserverInArray(o: TObserver): integer;
-    procedure DeleteObserverFromArray(o: TObserver);
+    procedure _addObserverToArray(o: TObserver);
+    function _findObserverInArray(o: TObserver): integer;
+    procedure _deleteObserverFromArray(o: TObserver);
   protected
     /// <summary>
     /// Indicates that this object has no longer changed, or that it has
@@ -73,10 +73,10 @@ uses
 
 procedure TObservable.addObserver(o: TObserver);
 begin
-  AddObserverToArray(o);
+  _addObserverToArray(o);
 end;
 
-procedure TObservable.AddObserverToArray(o: TObserver);
+procedure TObservable._addObserverToArray(o: TObserver);
 begin
   SetLength(FObservers, Length(FObservers) + 1);
   FObservers[High(FObservers)] := o;
@@ -94,15 +94,15 @@ end;
 
 procedure TObservable.deleteObserver(o: TObserver);
 begin
-  DeleteObserverFromArray(o);
+  _deleteObserverFromArray(o);
 end;
 
-procedure TObservable.DeleteObserverFromArray(o: TObserver);
+procedure TObservable._deleteObserverFromArray(o: TObserver);
 var
   idx: integer;
   j: integer;
 begin
-  idx := FindObserverInArray(o);
+  idx := _findObserverInArray(o);
   if idx < 0 then
     raise ERangeError.Create('Error Message')
   else
@@ -118,7 +118,7 @@ begin
 
 end;
 
-function TObservable.FindObserverInArray(o: TObserver): integer;
+function TObservable._findObserverInArray(o: TObserver): integer;
 begin
   for Result := 0 to High(FObservers) do
     exit;
