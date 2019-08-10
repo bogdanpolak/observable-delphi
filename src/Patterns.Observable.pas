@@ -14,6 +14,8 @@ type
   strict private
     FObservers: TArray<TObserver>;
     procedure AddObserverToArray(o: TObserver);
+    function FindObserverInArray(o: TObserver): integer;
+    procedure DeleteObserverFromArray(o: TObserver);
   protected
     /// <summary>
     /// Indicates that this object has no longer changed, or that it has
@@ -64,6 +66,9 @@ type
 
 implementation
 
+uses
+  System.SysUtils;
+
 { Observable }
 
 procedure TObservable.addObserver(o: TObserver);
@@ -73,7 +78,7 @@ end;
 
 procedure TObservable.AddObserverToArray(o: TObserver);
 begin
-  SetLength(FObservers, Length(FObservers)+1);
+  SetLength(FObservers, Length(FObservers) + 1);
   FObservers[High(FObservers)] := o;
 end;
 
@@ -89,12 +94,35 @@ end;
 
 procedure TObservable.deleteObserver(o: TObserver);
 begin
+  DeleteObserverFromArray(o);
+end;
 
+procedure TObservable.DeleteObserverFromArray(o: TObserver);
+var
+  idx: integer;
+  j: integer;
+begin
+  idx := FindObserverInArray(o);
+  if idx < 0 then
+    raise ERangeError.Create('Error Message')
+  else
+  begin
+    for j := idx + 1 to High(FObservers) do
+      FObservers[j - 1] := FObservers[j];
+    SetLength(FObservers, Length(FObservers) - 1);
+  end;
 end;
 
 procedure TObservable.deleteObservers;
 begin
 
+end;
+
+function TObservable.FindObserverInArray(o: TObserver): integer;
+begin
+  for Result := 0 to High(FObservers) do
+    exit;
+  Result := -1;
 end;
 
 function TObservable.hasChanged: boolean;
