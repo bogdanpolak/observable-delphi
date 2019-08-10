@@ -4,13 +4,16 @@ interface
 
 uses
   DUnitX.TestFramework,
-  System.Classes, System.SysUtils;
+  System.Classes, System.SysUtils,
+  Patterns.Observable;
 
 {$M+}
 
 type
   [TestFixture]
   TObervableTests = class(TObject)
+  private
+    FObservable: TObservable;
   public
     [Setup]
     procedure Setup;
@@ -30,10 +33,12 @@ implementation
 
 procedure TObervableTests.Setup;
 begin
+  FObservable := TObservable.Create;
 end;
 
 procedure TObervableTests.TearDown;
 begin
+  FObservable.Free;
 end;
 
 {$ENDREGION}
