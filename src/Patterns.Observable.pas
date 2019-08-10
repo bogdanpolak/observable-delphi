@@ -2,12 +2,18 @@ unit Patterns.Observable;
 
 interface
 
+uses
+  System.Generics.Collections;
+
 type
   TObserver = class
 
   end;
 
   TObservable = class
+  strict private
+    FObservers: TArray<TObserver>;
+    procedure AddObserverToArray(o: TObserver);
   protected
     /// <summary>
     /// Indicates that this object has no longer changed, or that it has
@@ -39,7 +45,7 @@ type
     /// </summary>
     procedure deleteObservers();
     /// <summary>
-    ///   Tests if this object has changed.
+    /// Tests if this object has changed.
     /// </summary>
     function hasChanged(): boolean;
     /// <summary>
@@ -62,7 +68,13 @@ implementation
 
 procedure TObservable.addObserver(o: TObserver);
 begin
+  AddObserverToArray(o);
+end;
 
+procedure TObservable.AddObserverToArray(o: TObserver);
+begin
+  SetLength(FObservers, Length(FObservers)+1);
+  FObservers[High(FObservers)] := o;
 end;
 
 procedure TObservable.clearChanged;
@@ -72,7 +84,7 @@ end;
 
 function TObservable.countObservers: integer;
 begin
-  Result := -1;
+  Result := Length(FObservers);
 end;
 
 procedure TObservable.deleteObserver(o: TObserver);
