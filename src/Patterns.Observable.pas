@@ -16,6 +16,8 @@ type
     procedure _addObserverToArray(o: TObserver);
     function _findObserverInArray(o: TObserver): integer;
     procedure _deleteObserverFromArray(o: TObserver);
+  private
+    FIsChanged: Boolean;
   public
     /// <summary>
     /// Indicates that this object has no longer changed, or that it has
@@ -128,7 +130,7 @@ end;
 
 function TObservable.hasChanged: boolean;
 begin
-  Result := False;
+  Result := FIsChanged;
 end;
 
 procedure TObservable.notifyObservers(arg: TObject);
@@ -143,7 +145,7 @@ end;
 
 procedure TObservable.setChanged;
 begin
-
+  FIsChanged := true;
 end;
 
 end.
