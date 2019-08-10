@@ -26,7 +26,7 @@ implementation
 // ------------------------------------------------------------------------
 // Setup and TearDown
 // ------------------------------------------------------------------------
-{$REGION 'Registered issues (bugs)'}
+{$REGION 'Setup and tear down'}
 
 procedure TObervableTests.Setup;
 begin
@@ -40,13 +40,14 @@ end;
 // ------------------------------------------------------------------------
 // Test 1
 // ------------------------------------------------------------------------
-{$REGION 'Registered issues (bugs)'}
+{$REGION 'Test 1'}
 
 procedure TObervableTests.Test1;
 begin
 
 end;
 
+{$ENDREGION}
 initialization
   TDUnitX.RegisterTestFixture(TObervableTests);
 end.
