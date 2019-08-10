@@ -10,9 +10,11 @@ uses
 {$M+}
 
 type
+
   [TestFixture]
   TObervableTests = class(TObject)
   private
+    o1: TObserver;
     FObservable: TObservable;
   public
     [Setup]
@@ -21,7 +23,7 @@ type
     procedure TearDown;
   published
     // -------------
-    procedure Test1;
+    procedure TestAddObserver;
   end;
 
 implementation
@@ -33,26 +35,32 @@ implementation
 
 procedure TObervableTests.Setup;
 begin
+  o1 := TObserver.Create;
   FObservable := TObservable.Create;
 end;
 
 procedure TObervableTests.TearDown;
 begin
-  FObservable.Free;
+  FreeAndNil(FObservable);
+  FreeAndNil(o1);
 end;
 
 {$ENDREGION}
 // ------------------------------------------------------------------------
-// Test 1
+// Basic tests
 // ------------------------------------------------------------------------
-{$REGION 'Test 1'}
+{$REGION 'Basic tests'}
 
-procedure TObervableTests.Test1;
+procedure TObervableTests.TestAddObserver;
 begin
-
+  FObservable.addObserver(o1);
+  Assert.AreEqual(1,FObservable.countObservers);
 end;
 
 {$ENDREGION}
+
 initialization
-  TDUnitX.RegisterTestFixture(TObervableTests);
+
+TDUnitX.RegisterTestFixture(TObervableTests);
+
 end.
