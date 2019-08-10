@@ -106,7 +106,9 @@ end;
 
 procedure TObervableTests.TestChanged_SetAndClearChanged;
 begin
-
+  FObservable.setChanged;
+  FObservable.clearChanged;
+  Assert.IsFalse(FObservable.hasChanged);
 end;
 
 {$ENDREGION}
