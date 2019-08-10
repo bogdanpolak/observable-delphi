@@ -16,19 +16,20 @@ type
     procedure _addObserverToArray(o: TObserver);
     function _findObserverInArray(o: TObserver): integer;
     procedure _deleteObserverFromArray(o: TObserver);
-  protected
+  public
     /// <summary>
     /// Indicates that this object has no longer changed, or that it has
     /// already notified all of its observers of its most recent change,
     /// so that the hasChanged method will now return false.
     /// </summary>
+    // clearChanged was protected
     procedure clearChanged();
     /// <summary>
     /// Marks this Observable object as having been changed; the hasChanged
     /// method will now return true.
     /// </summary>
+    // setChangedChanged was protected
     procedure setChanged();
-  public
     /// <summary>
     /// Adds an observer to the set of observers for this object, provided
     /// that it is not the same as some observer already in the set.
