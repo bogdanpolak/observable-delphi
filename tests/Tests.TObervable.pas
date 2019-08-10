@@ -27,6 +27,7 @@ type
     procedure TestCountZero;
     procedure TestAddObserver_One;
     procedure TestAddObserver_Two;
+    procedure TestDeleteObserver_Add2_Delete1;
   end;
 
 implementation
@@ -59,6 +60,14 @@ end;
 procedure TObervableTests.TestCountZero;
 begin
   Assert.AreEqual(0,FObservable.countObservers);
+end;
+
+procedure TObervableTests.TestDeleteObserver_Add2_Delete1;
+begin
+  FObservable.addObserver(o1);
+  FObservable.addObserver(o2);
+  FObservable.deleteObserver(o1);
+  Assert.AreEqual(1,FObservable.countObservers);
 end;
 
 procedure TObervableTests.TestAddObserver_One;
