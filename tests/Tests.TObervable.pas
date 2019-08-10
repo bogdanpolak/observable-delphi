@@ -15,6 +15,7 @@ type
   TObervableTests = class(TObject)
   private
     o1: TObserver;
+    o2: TObserver;
     FObservable: TObservable;
   public
     [Setup]
@@ -24,6 +25,7 @@ type
   published
     // -------------
     procedure TestAddObserver_One;
+    procedure TestAddObserver_Two;
   end;
 
 implementation
@@ -36,6 +38,7 @@ implementation
 procedure TObervableTests.Setup;
 begin
   o1 := TObserver.Create;
+  o2 := TObserver.Create;
   FObservable := TObservable.Create;
 end;
 
@@ -43,6 +46,7 @@ procedure TObervableTests.TearDown;
 begin
   FreeAndNil(FObservable);
   FreeAndNil(o1);
+  FreeAndNil(o2);
 end;
 
 {$ENDREGION}
@@ -55,6 +59,13 @@ procedure TObervableTests.TestAddObserver_One;
 begin
   FObservable.addObserver(o1);
   Assert.AreEqual(1,FObservable.countObservers);
+end;
+
+procedure TObervableTests.TestAddObserver_Two;
+begin
+  FObservable.addObserver(o1);
+  FObservable.addObserver(o2);
+  Assert.AreEqual(2,FObservable.countObservers);
 end;
 
 {$ENDREGION}
