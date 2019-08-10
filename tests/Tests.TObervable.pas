@@ -28,6 +28,10 @@ type
     procedure TestAddObserver_One;
     procedure TestAddObserver_Two;
     procedure TestDeleteObserver_Add2_Delete1;
+    // -------------
+    procedure TestChanged_InitialNotChanged;
+    procedure TestChanged_SetChanged;
+    procedure TestChanged_SetAndClearChanged;
   end;
 
 implementation
@@ -84,6 +88,29 @@ begin
 end;
 
 {$ENDREGION}
+// ------------------------------------------------------------------------
+// Tests Changed
+// ------------------------------------------------------------------------
+{$REGION 'Tests Changed'}
+
+procedure TObervableTests.TestChanged_InitialNotChanged;
+begin
+  Assert.IsFalse(FObservable.hasChanged);
+end;
+
+procedure TObervableTests.TestChanged_SetChanged;
+begin
+  FObservable.setChanged;
+  Assert.IsTrue(FObservable.hasChanged);
+end;
+
+procedure TObervableTests.TestChanged_SetAndClearChanged;
+begin
+
+end;
+
+{$ENDREGION}
+// ------------------------------------------------------------------------
 
 initialization
 
