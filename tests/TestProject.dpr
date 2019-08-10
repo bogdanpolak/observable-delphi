@@ -11,7 +11,8 @@ uses
   DUnitX.Loggers.Console,
   DUnitX.Loggers.Xml.NUnit,
   DUnitX.TestFramework,
-  Tests.TObervable in 'Tests.TObervable.pas';
+  Tests.TObervable in 'Tests.TObervable.pas',
+  Patterns.Observable in '..\src\Patterns.Observable.pas';
 
 var
   runner : ITestRunner;
