@@ -9,9 +9,16 @@ type
 
   TObservable = class
   protected
-    // Indicates that this object has no longer changed, or that it has already notified all of its observers of its most recent change, so that the hasChanged method will now return false.
+    /// <summary>
+    /// Indicates that this object has no longer changed, or that it has
+    /// already notified all of its observers of its most recent change,
+    /// so that the hasChanged method will now return false.
+    /// </summary>
     procedure clearChanged();
-    // Marks this Observable object as having been changed; the hasChanged method will now return true.
+    /// <summary>
+    /// Marks this Observable object as having been changed; the hasChanged
+    /// method will now return true.
+    /// </summary>
     procedure setChanged();
   public
     /// <summary>
