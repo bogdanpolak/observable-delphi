@@ -23,7 +23,7 @@ type
     procedure TearDown;
   published
     // -------------
-    procedure TestAddObserver;
+    procedure TestAddObserver_One;
   end;
 
 implementation
@@ -51,7 +51,7 @@ end;
 // ------------------------------------------------------------------------
 {$REGION 'Basic tests'}
 
-procedure TObervableTests.TestAddObserver;
+procedure TObervableTests.TestAddObserver_One;
 begin
   FObservable.addObserver(o1);
   Assert.AreEqual(1,FObservable.countObservers);
