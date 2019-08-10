@@ -10,9 +10,12 @@ uses
 {$M+}
 
 type
+
   [TestFixture]
   TObervableTests = class(TObject)
   private
+    o1: TObserver;
+    o2: TObserver;
     FObservable: TObservable;
   public
     [Setup]
@@ -21,7 +24,10 @@ type
     procedure TearDown;
   published
     // -------------
-    procedure Test1;
+    procedure TestCountZero;
+    procedure TestAddObserver_One;
+    procedure TestAddObserver_Two;
+    procedure TestDeleteObserver_Add2_Delete1;
   end;
 
 implementation
@@ -33,26 +39,54 @@ implementation
 
 procedure TObervableTests.Setup;
 begin
+  o1 := TObserver.Create;
+  o2 := TObserver.Create;
   FObservable := TObservable.Create;
 end;
 
 procedure TObervableTests.TearDown;
 begin
-  FObservable.Free;
+  FreeAndNil(FObservable);
+  FreeAndNil(o1);
+  FreeAndNil(o2);
 end;
 
 {$ENDREGION}
 // ------------------------------------------------------------------------
-// Test 1
+// Basic tests
 // ------------------------------------------------------------------------
-{$REGION 'Test 1'}
+{$REGION 'Basic tests'}
 
-procedure TObervableTests.Test1;
+procedure TObervableTests.TestCountZero;
 begin
+  Assert.AreEqual(0,FObservable.countObservers);
+end;
 
+procedure TObervableTests.TestDeleteObserver_Add2_Delete1;
+begin
+  FObservable.addObserver(o1);
+  FObservable.addObserver(o2);
+  FObservable.deleteObserver(o1);
+  Assert.AreEqual(1,FObservable.countObservers);
+end;
+
+procedure TObervableTests.TestAddObserver_One;
+begin
+  FObservable.addObserver(o1);
+  Assert.AreEqual(1,FObservable.countObservers);
+end;
+
+procedure TObervableTests.TestAddObserver_Two;
+begin
+  FObservable.addObserver(o1);
+  FObservable.addObserver(o2);
+  Assert.AreEqual(2,FObservable.countObservers);
 end;
 
 {$ENDREGION}
+
 initialization
-  TDUnitX.RegisterTestFixture(TObervableTests);
+
+TDUnitX.RegisterTestFixture(TObervableTests);
+
 end.

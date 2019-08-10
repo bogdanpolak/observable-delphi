@@ -2,12 +2,20 @@ unit Patterns.Observable;
 
 interface
 
+uses
+  System.Generics.Collections;
+
 type
   TObserver = class
 
   end;
 
   TObservable = class
+  strict private
+    FObservers: TArray<TObserver>;
+    procedure _addObserverToArray(o: TObserver);
+    function _findObserverInArray(o: TObserver): integer;
+    procedure _deleteObserverFromArray(o: TObserver);
   protected
     /// <summary>
     /// Indicates that this object has no longer changed, or that it has
@@ -39,7 +47,7 @@ type
     /// </summary>
     procedure deleteObservers();
     /// <summary>
-    ///   Tests if this object has changed.
+    /// Tests if this object has changed.
     /// </summary>
     function hasChanged(): boolean;
     /// <summary>
@@ -58,11 +66,20 @@ type
 
 implementation
 
+uses
+  System.SysUtils;
+
 { Observable }
 
 procedure TObservable.addObserver(o: TObserver);
 begin
+  _addObserverToArray(o);
+end;
 
+procedure TObservable._addObserverToArray(o: TObserver);
+begin
+  SetLength(FObservers, Length(FObservers) + 1);
+  FObservers[High(FObservers)] := o;
 end;
 
 procedure TObservable.clearChanged;
@@ -72,17 +89,40 @@ end;
 
 function TObservable.countObservers: integer;
 begin
-  Result := -1;
+  Result := Length(FObservers);
 end;
 
 procedure TObservable.deleteObserver(o: TObserver);
 begin
+  _deleteObserverFromArray(o);
+end;
 
+procedure TObservable._deleteObserverFromArray(o: TObserver);
+var
+  idx: integer;
+  j: integer;
+begin
+  idx := _findObserverInArray(o);
+  if idx < 0 then
+    raise ERangeError.Create('Error Message')
+  else
+  begin
+    for j := idx + 1 to High(FObservers) do
+      FObservers[j - 1] := FObservers[j];
+    SetLength(FObservers, Length(FObservers) - 1);
+  end;
 end;
 
 procedure TObservable.deleteObservers;
 begin
 
+end;
+
+function TObservable._findObserverInArray(o: TObserver): integer;
+begin
+  for Result := 0 to High(FObservers) do
+    exit;
+  Result := -1;
 end;
 
 function TObservable.hasChanged: boolean;
