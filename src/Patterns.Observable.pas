@@ -141,8 +141,11 @@ begin
 end;
 
 procedure TObservable.notifyObservers;
+var
+  o: IObserver;
 begin
-
+  for o in FObservers do
+    o.update(self,nil);
 end;
 
 procedure TObservable.setChanged;
