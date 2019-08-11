@@ -87,7 +87,7 @@ end;
 
 procedure TObservable.clearChanged;
 begin
-
+  FIsChanged := False;
 end;
 
 function TObservable.countObservers: integer;
