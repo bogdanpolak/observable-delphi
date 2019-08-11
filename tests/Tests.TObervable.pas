@@ -31,6 +31,7 @@ type
     procedure TestChanged_SetChanged;
     procedure TestChanged_SetAndClearChanged;
     // -------------
+    procedure TestNotify_OneObserver;
   end;
 
 implementation
@@ -140,6 +141,23 @@ begin
   FObservable.setChanged;
   FObservable.clearChanged;
   Assert.IsFalse(FObservable.hasChanged);
+end;
+
+{$ENDREGION}
+// ------------------------------------------------------------------------
+// Tests NotifyObservers
+// ------------------------------------------------------------------------
+{$REGION 'Tests NotifyObservers'}
+
+procedure TObervableTests.TestNotify_OneObserver;
+var
+  o1: TBaseObserver;
+begin
+  o1 := TBaseObserver.Create;
+  FObservable.addObserver(o1);
+  FObservable.setChanged;
+  FObservable.notifyObservers;
+  Assert.IsTrue(o1.IsUpdated);
 end;
 
 {$ENDREGION}
