@@ -52,7 +52,7 @@ type
     /// <summary>
     /// Tests if this object has changed.
     /// </summary>
-    function hasChanged(): boolean;
+    function hasChanged(): Boolean;
     /// <summary>
     /// If this object has changed, as indicated by the hasChanged method,
     /// then notify all of its observers and then call the clearChanged
@@ -118,17 +118,17 @@ end;
 
 procedure TObservable.deleteObservers;
 begin
-
+  SetLength(FObservers, 0);
 end;
 
-function TObservable._findObserverInArray(o: TObserver): integer;
+function TObservable._findObserverInArray(o: IObserver): integer;
 begin
   for Result := 0 to High(FObservers) do
     exit;
   Result := -1;
 end;
 
-function TObservable.hasChanged: boolean;
+function TObservable.hasChanged: Boolean;
 begin
   Result := FIsChanged;
 end;
