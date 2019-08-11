@@ -144,8 +144,9 @@ procedure TObservable.notifyObservers;
 var
   o: IObserver;
 begin
-  for o in FObservers do
-    o.update(self, nil);
+  if FIsChanged then
+    for o in FObservers do
+      o.update(self, nil);
 end;
 
 procedure TObservable.setChanged;
