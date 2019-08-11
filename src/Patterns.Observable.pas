@@ -9,7 +9,7 @@ type
   TObservable = class;
 
   IObserver = interface
-    procedure update (AObservable: TObservable;  AObject: TObject);
+    procedure update(AObservable: TObservable; AObject: TObject);
   end;
 
   TObservable = class
@@ -145,7 +145,7 @@ var
   o: IObserver;
 begin
   for o in FObservers do
-    o.update(self,nil);
+    o.update(self, nil);
 end;
 
 procedure TObservable.setChanged;
