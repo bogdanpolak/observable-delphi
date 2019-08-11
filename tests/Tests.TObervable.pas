@@ -34,6 +34,7 @@ type
     // -------------
     procedure TestNotify_OneObserver;
     procedure TestNotify_NotNotifedWithoutSetChanged;
+    procedure TestNotify_NotNotifedAfterSetAndClearChanged;
   end;
 
 implementation
@@ -168,6 +169,18 @@ var
 begin
   o1 := TBaseObserver.Create;
   FObservable.addObserver(o1);
+  FObservable.notifyObservers;
+  Assert.IsFalse(o1.IsUpdated);
+end;
+
+procedure TObervableTests.TestNotify_NotNotifedAfterSetAndClearChanged;
+var
+  o1: TBaseObserver;
+begin
+  o1 := TBaseObserver.Create;
+  FObservable.addObserver(o1);
+  FObservable.setChanged;
+  FObservable.clearChanged;
   FObservable.notifyObservers;
   Assert.IsFalse(o1.IsUpdated);
 end;
