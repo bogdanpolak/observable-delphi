@@ -4,11 +4,12 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages,
-  System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+  System.SysUtils, System.Variants, System.Classes, System.Math,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  Patterns.Observable, Interval;
 
 type
-  TForm1 = class(TForm)
+  TForm1 = class(TForm, IObserver)
     LabelExampleInfo: TLabel;
     GroupBox1: TGroupBox;
     Label1: TLabel;
@@ -17,12 +18,14 @@ type
     edtEndField: TEdit;
     Label3: TLabel;
     edtLengthField: TEdit;
+    procedure FormCreate(Sender: TObject);
     procedure edtStartFieldExit(Sender: TObject);
     procedure edtEndFieldExit(Sender: TObject);
     procedure edtLengthFieldExit(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
-    procedure calculateEnd;
-    procedure calculateLength;
+    FInterval: TInterval;
+    procedure update(AObservable: TObservable; AObject: TObject);
   public
   end;
 
@@ -38,56 +41,53 @@ begin
   Result := StrToInt(s);
 end;
 
-function isNotInteger(const s: String): boolean;
+function IsInteger(const s: String): boolean;
 var
   i: Integer;
 begin
-  Result := not TryStrToInt(s, i);
+  Result := TryStrToInt(s, i);
 end;
 
-procedure TForm1.calculateEnd;
-var
-  _start: Integer;
-  _length: Integer;
-  _end: Integer;
+procedure TForm1.FormCreate(Sender: TObject);
 begin
-  _start := Integer_parseInt(edtStartField.Text);
-  _length := Integer_parseInt(edtLengthField.Text);
-  _end := _start + _length;
-  edtEndField.Text := _end.ToString;
+  FInterval := TInterval.Create;
+  with FInterval do
+  begin
+    MinValue := 1;
+    MaxValue := 8;
+  end;
+  FInterval.addObserver(Self);
+  update(FInterval, nil);
 end;
 
-procedure TForm1.calculateLength;
-var
-  _start: Integer;
-  _end: Integer;
-  _length: Integer;
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  _start := Integer_parseInt(edtStartField.Text);
-  _end := Integer_parseInt(edtEndField.Text);
-  _length := _end - _start;
-  edtLengthField.Text := _length.ToString;
+  FInterval.Free;
+end;
+
+procedure TForm1.update(AObservable: TObservable; AObject: TObject);
+begin
+  edtStartField.Text := FInterval.MinValue.ToString;
+  edtEndField.Text := FInterval.MaxValue.ToString;
+  edtLengthField.Text := FInterval.Length.ToString;
 end;
 
 procedure TForm1.edtStartFieldExit(Sender: TObject);
 begin
-  if isNotInteger(edtStartField.Text) then
-    edtStartField.Text := '0';
-  calculateLength();
+  FInterval.MinValue := IfThen(IsInteger(edtStartField.Text),
+    Integer_parseInt(edtStartField.Text), 0);
 end;
 
 procedure TForm1.edtEndFieldExit(Sender: TObject);
 begin
-  if isNotInteger(edtEndField.Text) then
-    edtEndField.Text := '0';
-  calculateLength();
+  FInterval.MaxValue := IfThen(IsInteger(edtEndField.Text),
+    Integer_parseInt(edtEndField.Text), 0);
 end;
 
 procedure TForm1.edtLengthFieldExit(Sender: TObject);
 begin
-  if isNotInteger(edtLengthField.Text) then
-    edtLengthField.Text := '0';
-  calculateEnd();
+  FInterval.Length := IfThen(IsInteger(edtLengthField.Text),
+    Integer_parseInt(edtLengthField.Text), 0);
 end;
 
 end.
