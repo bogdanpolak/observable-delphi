@@ -6,16 +6,18 @@ uses
   System.Generics.Collections;
 
 type
-  TObserver = class
+  TObservable = class;
 
+  IObserver = interface
+    procedure update (AObservable: TObservable;  AObject: TObject);
   end;
 
   TObservable = class
   strict private
-    FObservers: TArray<TObserver>;
-    procedure _addObserverToArray(o: TObserver);
-    function _findObserverInArray(o: TObserver): integer;
-    procedure _deleteObserverFromArray(o: TObserver);
+    FObservers: TArray<IObserver>;
+    procedure _addObserverToArray(o: IObserver);
+    function _findObserverInArray(o: IObserver): integer;
+    procedure _deleteObserverFromArray(o: IObserver);
   private
     FIsChanged: Boolean;
   public
@@ -36,7 +38,7 @@ type
     /// Adds an observer to the set of observers for this object, provided
     /// that it is not the same as some observer already in the set.
     /// </summary>
-    procedure addObserver(o: TObserver);
+    procedure addObserver(o: IObserver);
     /// <summary>
     /// Returns the number of observers of this Observable object.
     /// </summary>
@@ -44,7 +46,7 @@ type
     /// <summary>
     /// Deletes an observer from the set of observers of this object.
     /// </summary>
-    procedure deleteObserver(o: TObserver);
+    procedure deleteObserver(o: IObserver);
     /// <summary>
     /// Clears the observer list so that this object no longer has any observers.
     /// </summary>
@@ -74,12 +76,12 @@ uses
 
 { Observable }
 
-procedure TObservable.addObserver(o: TObserver);
+procedure TObservable.addObserver(o: IObserver);
 begin
   _addObserverToArray(o);
 end;
 
-procedure TObservable._addObserverToArray(o: TObserver);
+procedure TObservable._addObserverToArray(o: IObserver);
 begin
   SetLength(FObservers, Length(FObservers) + 1);
   FObservers[High(FObservers)] := o;
@@ -95,12 +97,12 @@ begin
   Result := Length(FObservers);
 end;
 
-procedure TObservable.deleteObserver(o: TObserver);
+procedure TObservable.deleteObserver(o: IObserver);
 begin
   _deleteObserverFromArray(o);
 end;
 
-procedure TObservable._deleteObserverFromArray(o: TObserver);
+procedure TObservable._deleteObserverFromArray(o: IObserver);
 var
   idx: integer;
   j: integer;
