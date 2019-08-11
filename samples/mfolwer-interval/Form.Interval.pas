@@ -3,11 +3,13 @@ unit Form.Interval;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+  Winapi.Windows, Winapi.Messages,
+  System.SysUtils, System.Variants, System.Classes, System.Math,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  Patterns.Observable, Interval;
 
 type
-  TForm1 = class(TForm)
+  TForm1 = class(TForm, IObserver)
     LabelExampleInfo: TLabel;
     GroupBox1: TGroupBox;
     Label1: TLabel;
@@ -16,12 +18,14 @@ type
     edtEndField: TEdit;
     Label3: TLabel;
     edtLengthField: TEdit;
+    procedure FormCreate(Sender: TObject);
     procedure edtStartFieldExit(Sender: TObject);
     procedure edtEndFieldExit(Sender: TObject);
     procedure edtLengthFieldExit(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
-    procedure calculateEnd;
-    procedure calculateLenght;
+    FInterval: TInterval;
+    procedure update(AObservable: TObservable; AObject: TObject);
   public
   end;
 
@@ -32,64 +36,58 @@ implementation
 
 {$R *.dfm}
 
-procedure TForm1.calculateEnd;
+function Integer_parseInt(const s: String): Integer;
 begin
-  // TODO:
-  (* Java:
-  try {
-    int start = Integer.parseInt(_startField.getText());
-    int length = Integer.parseInt(_lengthField.getText());
-    int end = start + length;
-    _endField.setText(String.valueOf(end));
-  } catch (NumberFormatException e) {
-    throw new RuntimeException ("Unexpected Number Format Error");
-  }
-  *)
+  Result := StrToInt(s);
 end;
 
-procedure TForm1.calculateLenght;
+function IsInteger(const s: String): boolean;
+var
+  i: Integer;
 begin
-  // TODO:
-  (* Java:
-  try {
-    int start = Integer.parseInt(_startField.getText());
-    int end = Integer.parseInt(_endField.getText());
-    int length = end - start;
-    _lengthField.setText(String.valueOf(length));
-  } catch (NumberFormatException e) {
-    throw new RuntimeException ("Unexpected Number Format Error");
-  }
-  *)
+  Result := TryStrToInt(s, i);
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  FInterval := TInterval.Create;
+  with FInterval do
+  begin
+    MinValue := 1;
+    MaxValue := 8;
+  end;
+  FInterval.addObserver(Self);
+  update(FInterval, nil);
+end;
+
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  FInterval.Free;
+end;
+
+procedure TForm1.update(AObservable: TObservable; AObject: TObject);
+begin
+  edtStartField.Text := FInterval.MinValue.ToString;
+  edtEndField.Text := FInterval.MaxValue.ToString;
+  edtLengthField.Text := FInterval.Length.ToString;
 end;
 
 procedure TForm1.edtStartFieldExit(Sender: TObject);
 begin
-  // TODO:
-  (* Java:
-   * if (isNotInteger(_startField.getText()))
-   *   _startField.setText("0");
-   * calculateLength();
-   *)
+  FInterval.MinValue := IfThen(IsInteger(edtStartField.Text),
+    Integer_parseInt(edtStartField.Text), 0);
 end;
 
 procedure TForm1.edtEndFieldExit(Sender: TObject);
 begin
-  // TODO:
-  (* Java:
-   * if (isNotInteger(_endField.getText()))
-   *   _endField.setText("0");
-   * calculateLength();
-   *)
+  FInterval.MaxValue := IfThen(IsInteger(edtEndField.Text),
+    Integer_parseInt(edtEndField.Text), 0);
 end;
 
 procedure TForm1.edtLengthFieldExit(Sender: TObject);
 begin
-  // TODO:
-  (* Java:
-   * if (isNotInteger(_lengthField.getText()))
-   *   _lengthField.setText("0");
-   * calculateEnd();
-   *)
+  FInterval.Length := IfThen(IsInteger(edtLengthField.Text),
+    Integer_parseInt(edtLengthField.Text), 0);
 end;
 
 end.

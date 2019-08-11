@@ -11,6 +11,8 @@ object Form1: TForm1
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnClose = FormClose
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object LabelExampleInfo: TLabel
@@ -45,7 +47,6 @@ object Form1: TForm1
     Align = alTop
     Caption = 'Interval'
     TabOrder = 0
-    ExplicitLeft = -2
     object Label1: TLabel
       AlignWithMargins = True
       Left = 5
@@ -86,9 +87,6 @@ object Form1: TForm1
       TabOrder = 0
       Text = '0'
       OnExit = edtStartFieldExit
-      ExplicitLeft = 46
-      ExplicitTop = 115
-      ExplicitWidth = 121
     end
     object edtEndField: TEdit
       AlignWithMargins = True
@@ -100,7 +98,6 @@ object Form1: TForm1
       TabOrder = 1
       Text = '0'
       OnExit = edtEndFieldExit
-      ExplicitLeft = 3
     end
     object edtLengthField: TEdit
       AlignWithMargins = True
@@ -112,9 +109,6 @@ object Form1: TForm1
       TabOrder = 2
       Text = '0'
       OnExit = edtLengthFieldExit
-      ExplicitLeft = 120
-      ExplicitTop = 139
-      ExplicitWidth = 121
     end
   end
 end
