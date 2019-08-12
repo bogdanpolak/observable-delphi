@@ -25,7 +25,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     FInterval: TInterval;
-    procedure update(AObservable: TObservable; AObject: TObject);
+    procedure OnObserverUpdate(AObservable: TObservable; AObject: TObject);
   public
   end;
 
@@ -51,13 +51,12 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   FInterval := TInterval.Create;
+  FInterval.addObserver(Self);
   with FInterval do
   begin
     MinValue := 1;
     MaxValue := 8;
   end;
-  FInterval.addObserver(Self);
-  update(FInterval, nil);
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -65,7 +64,8 @@ begin
   FInterval.Free;
 end;
 
-procedure TForm1.update(AObservable: TObservable; AObject: TObject);
+
+procedure TForm1.OnObserverUpdate(AObservable: TObservable; AObject: TObject);
 begin
   edtStartField.Text := FInterval.MinValue.ToString;
   edtEndField.Text := FInterval.MaxValue.ToString;

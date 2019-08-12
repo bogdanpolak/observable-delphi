@@ -49,7 +49,7 @@ type
   strict private
     FIsUpdated: boolean;
   public
-    procedure update(AObservable: TObservable; AObject: TObject);
+    procedure OnObserverUpdate(AObservable: TObservable; AObject: TObject);
     function IsUpdated: boolean;
   end;
 
@@ -58,7 +58,8 @@ begin
   Result := FIsUpdated;
 end;
 
-procedure TBaseObserver.update(AObservable: TObservable; AObject: TObject);
+procedure TBaseObserver.OnObserverUpdate(AObservable: TObservable;
+  AObject: TObject);
 begin
   FIsUpdated := True;
 end;

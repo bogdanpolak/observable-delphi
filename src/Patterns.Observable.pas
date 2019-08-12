@@ -9,7 +9,12 @@ type
   TObservable = class;
 
   IObserver = interface
-    procedure update(AObservable: TObservable; AObject: TObject);
+    /// <remarks>
+    /// Oryginalny this method name was `update`. It was changed because of the VCL warning (W1010): Method 'Update' hides virtual method of base type 'TWinControl'
+    /// Documentation for Vcl.Controls.TControl.Update:
+    /// http://docwiki.embarcadero.com/Libraries/Rio/en/Vcl.Controls.TControl.Update
+    /// </remarks>
+    procedure OnObserverUpdate(AObservable: TObservable; AObject: TObject);
   end;
 
   TObservable = class
@@ -146,7 +151,7 @@ var
 begin
   if FIsChanged then
     for o in FObservers do
-      o.update(self, nil);
+      o.OnObserverUpdate(self, nil);
 end;
 
 procedure TObservable.setChanged;
