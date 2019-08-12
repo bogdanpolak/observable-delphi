@@ -1,4 +1,4 @@
-program TestProject;
+program DunitxObservable;
 
 {$IFNDEF TESTINSIGHT}
 {$APPTYPE CONSOLE}
