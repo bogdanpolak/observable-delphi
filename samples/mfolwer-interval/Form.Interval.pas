@@ -38,14 +38,14 @@ implementation
 
 {$R *.dfm}
 
-function Integer_parseInt(const s: String): Integer;
+function Integer_parseInt(const s: String): integer;
 begin
   Result := StrToInt(s);
 end;
 
 function IsInteger(const s: String): boolean;
 var
-  i: Integer;
+  i: integer;
 begin
   Result := TryStrToInt(s, i);
 end;
@@ -66,12 +66,12 @@ begin
   FInterval.Free;
 end;
 
-procedure TForm1._highlightEditAfterUpdate (edit:TEdit);
+procedure TForm1._highlightEditAfterUpdate(edit: TEdit);
 begin
   // TODO: edit.Color := clMoneyGreen  and  edit.Color := clWindow (after 500 ms)
 end;
 
-procedure TForm1._editTextUpdate (edit:TEdit; newValue: integer);
+procedure TForm1._editTextUpdate(edit: TEdit; newValue: integer);
 begin
   if edit.Text <> newValue.ToString then
   begin
@@ -82,9 +82,9 @@ end;
 
 procedure TForm1.OnObserverUpdate(AObservable: TObservable; AObject: TObject);
 begin
-  _editTextUpdate (edtStartField, FInterval.MinValue);
-  _editTextUpdate (edtEndField, FInterval.MaxValue);
-  _editTextUpdate (edtLengthField, FInterval.Length);
+  _editTextUpdate(edtStartField, FInterval.MinValue);
+  _editTextUpdate(edtEndField, FInterval.MaxValue);
+  _editTextUpdate(edtLengthField, FInterval.Length);
 end;
 
 procedure TForm1.edtStartFieldExit(Sender: TObject);
