@@ -7,7 +7,7 @@ uses
   Patterns.Observable;
 
 type
-  TInterval = class (TObservable)
+  TInterval = class(TObservable)
   private
     FMinValue: Integer;
     FMaxValue: Integer;
@@ -15,9 +15,9 @@ type
     procedure calculateLength;
     procedure calculateMaxValue;
   protected
-    procedure SetMinValue (Value: Integer);
-    procedure SetMaxValue (Value: Integer);
-    procedure SetLength (Value: Integer);
+    procedure SetMinValue(Value: Integer);
+    procedure SetMaxValue(Value: Integer);
+    procedure SetLength(Value: Integer);
   public
     property MinValue: Integer read FMinValue write SetMinValue;
     property MaxValue: Integer read FMaxValue write SetMaxValue;
