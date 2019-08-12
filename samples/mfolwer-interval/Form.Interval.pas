@@ -6,6 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Variants, System.Classes, System.Math,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls,
+  Plus.Vcl.Timer,
   Patterns.Observable, Interval;
 
 type
@@ -68,7 +69,12 @@ end;
 
 procedure TForm1._highlightEditAfterUpdate(edit: TEdit);
 begin
-  // TODO: edit.Color := clMoneyGreen  and  edit.Color := clWindow (after 500 ms)
+  edit.Color := clMoneyGreen;
+  TPlusTimer.RunOnce(Self, 500,
+    procedure
+    begin
+      edit.Color := clWindow;
+    end);
 end;
 
 procedure TForm1._editTextUpdate(edit: TEdit; newValue: integer);
