@@ -30,26 +30,35 @@ implementation
 
 procedure TInterval.SetMinValue(Value: Integer);
 begin
-  FMinValue := Value;
-  calculateMaxValue();
-  setChanged;
-  notifyObservers;
+  if Value <> FMinValue then
+  begin
+    FMinValue := Value;
+    calculateMaxValue();
+    setChanged;
+    notifyObservers;
+  end;
 end;
 
 procedure TInterval.SetMaxValue(Value: Integer);
 begin
-  FMaxValue := Value;
-  calculateLength();
-  setChanged;
-  notifyObservers;
+  if Value <> FMaxValue then
+  begin
+    FMaxValue := Value;
+    calculateLength();
+    setChanged;
+    notifyObservers;
+  end;
 end;
 
 procedure TInterval.SetLength(Value: Integer);
 begin
-  FLength := Value;
-  calculateMaxValue;
-  setChanged;
-  notifyObservers;
+  if Value <> FLength then
+  begin
+    FLength := Value;
+    calculateMaxValue;
+    setChanged;
+    notifyObservers;
+  end;
 end;
 
 procedure TInterval.calculateMaxValue;
